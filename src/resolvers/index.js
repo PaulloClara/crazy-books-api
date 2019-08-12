@@ -1,7 +1,16 @@
+const Users = require('../models/Users');
+
 module.exports = {
   Query: {
-    hello() {
-      return 'Hello World'
+    users() {
+      return Users.find();
+    },
+  },
+  Mutation: {
+    async createUser(_, { name, lastName }) {
+      const user = await Users.create({ name, lastName });
+      if (!user) return 'Error';
+      return user;
     },
   },
 };

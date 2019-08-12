@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { GraphQLServer } = require('graphql-yoga');
 const path = require('path');
 const resolvers = require('./resolvers');
