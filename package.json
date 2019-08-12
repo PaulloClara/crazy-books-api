@@ -1,0 +1,19 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "CRUD com node, graphql e mongodb.",
+  "main": "src",
+  "repository": "https://github.com/PaulloClara/crud-api-graphql.git",
+  "author": "PaulloClara",
+  "license": "MIT",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "dependencies": {
+    "graphql-yoga": "^1.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
