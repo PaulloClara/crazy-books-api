@@ -3,6 +3,7 @@ require('dotenv').config();
 const { GraphQLServer } = require('graphql-yoga');
 const path = require('path');
 const resolvers = require('./resolvers');
+const authUser = require('./middlewares/authUser');
 
 const opts = {
   port: 5000,
@@ -11,7 +12,8 @@ const opts = {
 const server = new GraphQLServer({
   typeDefs: path.resolve(__dirname, 'models', 'schema.graphql'),
   resolvers,
-  graphiql: true,
+  context: req => ({ ...req }),
+  middlewares: [authUser],
 });
 
 server.start(opts, () => {
