@@ -1,13 +1,5 @@
 scalar DateTime
 
-type User {
-  _id: ID!
-  name: String!
-  lastName: String!
-  username: String!
-  email: String!
-}
-
 type Book {
   _id: ID!
   title: String!
@@ -20,32 +12,11 @@ type Book {
 }
 
 type Query {
-  users: [User!]!
-  user: User!
   books: [Book!]!
   book(_id: ID!): Book!
 }
 
 type Mutation {
-  register(
-    name: String!
-    lastName: String!
-    username: String!
-    email: String!
-    password: String!
-  ): User!
-  login(
-    username: String
-    email: String
-    password: String!
-  ): String!
-  updateUser(
-    name: String
-    lastName: String
-    username: String
-    email: String
-  ): User!
-  deleteUser: String!
   createBook(
     title: String!
     titleBr: String

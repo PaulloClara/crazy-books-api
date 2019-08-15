@@ -15,6 +15,7 @@
     "dotenv": "^8.0.0",
     "graphql-yoga": "^1.18.1",
     "jsonwebtoken": "^8.5.1",
+    "merge-graphql-schemas": "^1.7.0",
     "mongoose": "^5.6.9"
   },
   "devDependencies": {
