@@ -1,3 +1,5 @@
+scalar DateTime
+
 type User {
   _id: ID!
   name: String!
@@ -6,9 +8,22 @@ type User {
   email: String!
 }
 
+type Book {
+  _id: ID!
+  title: String!
+  titleBr: String
+  pages: Int!
+  languages: [String!]!
+  categories: [String!]!
+  synopsis: String!
+  createdAt: DateTime!
+}
+
 type Query {
   users: [User!]!
   user(_id: ID!): User!
+  books: [Book!]!
+  book(_id: ID!): Book!
 }
 
 type Mutation {
@@ -24,4 +39,22 @@ type Mutation {
     email: String
     password: String!
   ): String!
+  createBook(
+    title: String!
+    titleBr: String
+    pages: Int!
+    languages: [String!]!
+    categories: [String!]!
+    synopsis: String!
+  ): Book!
+  updateBook(
+    _id: ID!
+    title: String
+    titleBr: String
+    pages: Int
+    languages: [String]
+    categories: [String]
+    synopsis: String
+  ): Book!
+  deleteBook(_id: ID!): String!
 }
