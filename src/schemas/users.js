@@ -1,6 +1,4 @@
-const mongoose = require('../database');
-
-const UsersSchema = mongoose.Schema({
+const UsersSchema = {
   name: {
     type: String,
     required: true,
@@ -24,8 +22,6 @@ const UsersSchema = mongoose.Schema({
     required: true,
     selected: false,
   },
-});
+};
 
-const Users = mongoose.model('users', UsersSchema);
-
-module.exports = Users;
+module.exports = UsersSchema;

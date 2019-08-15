@@ -10,7 +10,7 @@ const opts = {
 };
 
 const server = new GraphQLServer({
-  typeDefs: path.resolve(__dirname, 'models', 'schema.graphql'),
+  typeDefs: path.resolve(__dirname, 'schemas', 'schema.graphql'),
   resolvers,
   context: req => ({ ...req }),
   middlewares: [authUser],
