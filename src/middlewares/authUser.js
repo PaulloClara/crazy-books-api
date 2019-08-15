@@ -15,4 +15,8 @@ module.exports = {
   Query: {
     user: authUser,
   },
+  Mutation: {
+    updateUser: authUser,
+    deleteUser: authUser,
+  },
 };

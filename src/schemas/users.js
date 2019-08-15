@@ -1,4 +1,4 @@
-const UsersSchema = {
+module.exports = {
   name: {
     type: String,
     required: true,
@@ -23,5 +23,3 @@ const UsersSchema = {
     selected: false,
   },
 };
-
-module.exports = UsersSchema;

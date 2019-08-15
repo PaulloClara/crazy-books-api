@@ -21,7 +21,7 @@ type Book {
 
 type Query {
   users: [User!]!
-  user(_id: ID!): User!
+  user: User!
   books: [Book!]!
   book(_id: ID!): Book!
 }
@@ -39,6 +39,13 @@ type Mutation {
     email: String
     password: String!
   ): String!
+  updateUser(
+    name: String
+    lastName: String
+    username: String
+    email: String
+  ): User!
+  deleteUser: String!
   createBook(
     title: String!
     titleBr: String
