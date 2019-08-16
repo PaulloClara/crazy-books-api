@@ -4,6 +4,7 @@ type User {
   lastName: String!
   username: String!
   email: String!
+  books: [Book!]
 }
 
 type Query {
@@ -31,4 +32,10 @@ type Mutation {
     email: String
   ): User!
   deleteUser: String!
+  addBooks(
+    booksID: [ID!]!
+  ): User!
+  removeBooks(
+    booksID: [ID!]!
+  ): User!
 }

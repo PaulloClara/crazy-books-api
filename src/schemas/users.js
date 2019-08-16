@@ -22,4 +22,9 @@ module.exports = {
     required: true,
     selected: false,
   },
+  booksID: {
+    type: [String],
+    required: false,
+    default: [],
+  },
 };

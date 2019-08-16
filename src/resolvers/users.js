@@ -1,4 +1,4 @@
-const { Users } = require('../database/models');
+const { Users, Books } = require('../database/models');
 
 const jwt = require('../configs/jwt');
 const bcrypt = require('../configs/bcrypt');
@@ -10,7 +10,9 @@ module.exports = {
       return users;
     },
     async user(_, {}, { request }) {
-      const user = await Users.findOne({ _id: request.userID });
+      const { userID: _id } = request;
+      const user = await Users.findOne({ _id });
+      user.books = await Books.find({ _id: user.booksID });
       return user;
     },
   },
@@ -43,6 +45,29 @@ module.exports = {
       const result = await Users.deleteOne({ _id });
       if (!result.n) throw new Error('User not found');
       return 'OK';
+    },
+    async addBooks(_, { booksID }, { request }) {
+      const { userID: _id } = request;
+      const user = await Users.findOne({ _id });
+      booksID.forEach(value => {
+        if (user.booksID.includes(value)) return;
+        user.booksID.push(value);
+      });
+      user.save();
+      user.books = await Books.find({ _id: user.booksID });
+      return user;
+    },
+    async removeBooks(_, { booksID }, { request }) {
+      const { userID: _id } = request;
+      const user = await Users.findOne({ _id });
+      booksID.forEach(value => {
+        if (!user.booksID.includes(value)) return;
+        const index = user.booksID.indexOf(value);
+        user.booksID.splice(index, 1);
+      });
+      user.save();
+      user.books = await Books.find({ _id: user.booksID });
+      return user;
     },
   },
 };

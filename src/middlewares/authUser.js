@@ -18,5 +18,7 @@ module.exports = {
   Mutation: {
     updateUser: authUser,
     deleteUser: authUser,
+    addBooks: authUser,
+    removeBooks: authUser,
   },
 };
