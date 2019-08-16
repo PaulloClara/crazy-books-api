@@ -1,6 +1,6 @@
 const jwt = require('../configs/jwt');
 
-async function authUser(resolve, parent, args, ctx, info) {
+async function authUser(resolve, parent, args, ctx) {
   const auth = ctx.request.get('Authorization');
   if (!auth) throw new Error('Authorization not found!');
   const token = auth.split(' ')[1];

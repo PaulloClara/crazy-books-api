@@ -5,6 +5,7 @@ type User {
   username: String!
   email: String!
   books: [Book!]
+  createdAt: String!
 }
 
 type Query {

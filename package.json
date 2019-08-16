@@ -1,14 +1,15 @@
 {
-  "name": "crud-api",
+  "name": "crazy-books-api",
   "version": "1.0.0",
-  "description": "CRUD com node, graphql e mongodb.",
+  "description": "Api do projeto Crazy Books",
   "main": "src",
-  "repository": "https://github.com/PaulloClara/crud-api-graphql.git",
+  "repository": "https://github.com/PaulloClara/crazy-books-api.git",
   "author": "PaulloClara",
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
@@ -19,6 +20,11 @@
     "mongoose": "^5.6.9"
   },
   "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
     "nodemon": "^1.19.1"
   }
 }

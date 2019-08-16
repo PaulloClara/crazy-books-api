@@ -13,7 +13,7 @@ const opts = {
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: req => ({ ...req }),
+  context: (req) => ({ ...req }),
   middlewares: [authUser],
 });
 
@@ -22,4 +22,4 @@ server.start(opts, () => {
     \tRodando na porta ${opts.port}
     Acesse "http://localhost:${opts.port}"
   `);
-})
+});

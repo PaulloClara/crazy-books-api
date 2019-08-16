@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const privateKey = process.env.PRIVATE_KEY;
 
 module.exports = {
-  sign(id){
+  sign(id) {
     return jwt.sign({ id }, privateKey, { expiresIn: 86400 });
   },
   verify(token) {

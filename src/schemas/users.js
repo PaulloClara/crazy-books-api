@@ -27,4 +27,9 @@ module.exports = {
     required: false,
     default: [],
   },
+  createdAt: {
+    type: Date,
+    required: false,
+    default: Date.now,
+  },
 };

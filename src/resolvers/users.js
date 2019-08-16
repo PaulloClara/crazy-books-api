@@ -9,7 +9,7 @@ module.exports = {
       const users = await Users.find();
       return users;
     },
-    async user(_, {}, { request }) {
+    async user(_, args, { request }) {
       const { userID: _id } = request;
       const user = await Users.findOne({ _id });
       user.books = await Books.find({ _id: user.booksID });
@@ -49,7 +49,7 @@ module.exports = {
     async addBooks(_, { booksID }, { request }) {
       const { userID: _id } = request;
       const user = await Users.findOne({ _id });
-      booksID.forEach(value => {
+      booksID.forEach((value) => {
         if (user.booksID.includes(value)) return;
         user.booksID.push(value);
       });
@@ -60,7 +60,7 @@ module.exports = {
     async removeBooks(_, { booksID }, { request }) {
       const { userID: _id } = request;
       const user = await Users.findOne({ _id });
-      booksID.forEach(value => {
+      booksID.forEach((value) => {
         if (!user.booksID.includes(value)) return;
         const index = user.booksID.indexOf(value);
         user.booksID.splice(index, 1);
