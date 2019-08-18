@@ -1,13 +1,14 @@
 require('dotenv').config();
 
 const { GraphQLServer } = require('graphql-yoga');
+const cors = require('cors');
 
 const typeDefs = require('./schemas/graphql');
 const resolvers = require('./resolvers');
 const authUser = require('./middlewares/authUser');
 
 const opts = {
-  port: 5000,
+  port: process.env.PORT || 5000,
 };
 
 const server = new GraphQLServer({
@@ -16,6 +17,8 @@ const server = new GraphQLServer({
   context: (req) => ({ ...req }),
   middlewares: [authUser],
 });
+
+server.use(cors());
 
 server.start(opts, () => {
   console.log(`
