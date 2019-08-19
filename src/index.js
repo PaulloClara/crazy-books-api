@@ -1,13 +1,13 @@
 require('dotenv').config();
 
 const { GraphQLServer } = require('graphql-yoga');
-const cors = require('cors');
 
 const typeDefs = require('./schemas/graphql');
 const resolvers = require('./resolvers');
 const authUser = require('./middlewares/authUser');
 
 const opts = {
+  endpoint: '/graphql',
   port: process.env.PORT || 5000,
 };
 
@@ -18,11 +18,10 @@ const server = new GraphQLServer({
   middlewares: [authUser],
 });
 
-server.use(cors());
-
-server.start(opts, () => {
+server.start(opts, ({ port, endpoint }) => {
   console.log(`
-    \tRodando na porta ${opts.port}
-    Acesse "http://localhost:${opts.port}"
+    \t\t\tRodando na porta ${port}
+    \tAcesse "http://localhost:${port}" para acessar o playground
+    Acesse "http://localhost:${port}${endpoint}" para fazer requisições HTTP
   `);
 });
