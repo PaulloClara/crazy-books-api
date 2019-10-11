@@ -1,21 +1,21 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const { GraphQLServer } = require('graphql-yoga');
+const { GraphQLServer } = require("graphql-yoga");
 
-const typeDefs = require('./schemas/graphql');
-const resolvers = require('./resolvers');
-const authUser = require('./middlewares/authUser');
+const typeDefs = require("./schemas/graphql");
+const resolvers = require("./resolvers");
+const authUser = require("./middlewares/authUser");
 
 const opts = {
-  endpoint: '/graphql',
-  port: process.env.PORT || 5000,
+  endpoint: "/graphql",
+  port: process.env.PORT || 5000
 };
 
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: (req) => ({ ...req }),
-  middlewares: [authUser],
+  context: req => ({ ...req }),
+  middlewares: [authUser]
 });
 
 server.start(opts, ({ port, endpoint }) => {

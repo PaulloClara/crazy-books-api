@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 module.exports = {
   hash(password) {
@@ -6,5 +6,5 @@ module.exports = {
   },
   compare(password, hash) {
     return bcrypt.compare(password, hash);
-  },
+  }
 };

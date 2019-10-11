@@ -1,30 +1,30 @@
 module.exports = {
   title: {
     type: String,
-    required: true,
+    required: true
   },
   titleBr: {
     type: String,
-    required: false,
+    required: false
   },
   pages: {
     type: Number,
-    required: true,
+    required: true
   },
   languages: {
     type: [String],
-    required: true,
+    required: true
   },
   categories: {
     type: [String],
-    required: true,
+    required: true
   },
   synopsis: {
     type: String,
-    required: true,
+    required: true
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 };

@@ -1,35 +1,35 @@
 module.exports = {
   name: {
     type: String,
-    required: true,
+    required: true
   },
   lastName: {
     type: String,
-    required: true,
+    required: true
   },
   username: {
     type: String,
     unique: true,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     unique: true,
-    required: true,
+    required: true
   },
   password: {
     type: String,
     required: true,
-    selected: false,
+    selected: false
   },
   booksID: {
     type: [String],
     required: false,
-    default: [],
+    default: []
   },
   createdAt: {
     type: Date,
     required: false,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 };
