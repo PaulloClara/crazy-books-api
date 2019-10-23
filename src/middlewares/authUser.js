@@ -3,7 +3,7 @@ const { newError } = require("../utils/error");
 
 async function authUser(resolve, parent, args, { req, res }) {
   const auth = req.get("Authorization");
-  if (!auth) return newError("Authorization not found!", res, 400);
+  if (!auth) return newError("Authorization not found!", res, 401);
 
   const token = auth.split(" ")[1];
   if (!token) return newError("Token not found!", res, 400);

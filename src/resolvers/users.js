@@ -15,7 +15,6 @@ module.exports = {
       const { userID: _id } = req;
 
       const user = await Users.findOne({ _id });
-
       if (!user) return newError("User not found", res, 404);
 
       user.books = await Books.find({ _id: user.booksID });
@@ -31,22 +30,21 @@ module.exports = {
       args.password = await bcrypt.hash(args.password);
 
       const user = await Users.create(args);
-      if (!user) throw new Error("Error");
+      if (!user) return newError("Error", res);
+
+      res.status(201);
 
       return user;
     },
-    async login(_, args, { res }) {
-      const { username, email, password } = args;
-
-      let user = {};
-      if (username)
-        user = await Users.findOne({ username }).select("+password");
-      else user = await Users.findOne({ email }).select("+password");
+    async login(_, { username, email, password }, { res }) {
+      const user = username
+        ? await Users.findOne({ username }).select("+password")
+        : await Users.findOne({ email }).select("+password");
 
       if (!user) return newError("User not found", res, 404);
 
-      if (!(await bcrypt.compare(password, user.password)))
-        return newError("Password error", res, 401);
+      const passwordOk = await bcrypt.compare(password, user.password);
+      if (!passwordOk) return newError("Password error", res, 401);
 
       const token = await jwt.sign(user._id);
 
@@ -62,11 +60,18 @@ module.exports = {
 
       return user;
     },
-    async deleteUser(_, args, { req, res }) {
+    async deleteUser(_, { password }, { req, res }) {
       const { userID: _id } = req;
 
-      const result = await Users.deleteOne({ _id });
-      if (!result.n) newError("User not found", res, 404);
+      if (!password) return newError("Password not Found", res, 400);
+
+      const user = await Users.findOne({ _id }).select("+password");
+      if (!user) return newError("User not found", res, 404);
+
+      if (!(await bcrypt.compare(password, user.password)))
+        return newError("Password error", res, 401);
+
+      await Users.deleteOne({ _id });
 
       return "OK";
     },

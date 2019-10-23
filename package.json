@@ -1,6 +1,6 @@
 {
   "name": "crazy-books-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Api do projeto Crazy Books",
   "main": "src",
   "repository": "https://github.com/PaulloClara/crazy-books-api.git",
@@ -8,14 +8,12 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon .",
-    "lint": "eslint ./src"
+    "dev": "nodemon ."
   },
   "dependencies": {
     "apollo-server": "^2.9.7",
     "bcrypt": "^3.0.6",
     "dotenv": "^8.0.0",
-    "express": "^4.17.1",
     "graphql": "^14.5.8",
     "graphql-middleware": "^4.0.1",
     "jsonwebtoken": "^8.5.1",
