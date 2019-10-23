@@ -1,13 +1,18 @@
-const jwt = require("../configs/jwt");
+const jwt = require("../utils/jwt");
+const { newError } = require("../utils/error");
 
-async function authUser(resolve, parent, args, ctx) {
-  const auth = ctx.request.get("Authorization");
-  if (!auth) throw new Error("Authorization not found!");
+async function authUser(resolve, parent, args, { req, res }) {
+  const auth = req.get("Authorization");
+  if (!auth) return newError("Authorization not found!", res, 400);
+
   const token = auth.split(" ")[1];
-  if (!token) throw new Error("Token not found!");
+  if (!token) return newError("Token not found!", res, 400);
+
   const decoded = await jwt.verify(token);
-  if (!decoded) throw new Error("Invalid token!");
-  ctx.request.userID = decoded.id;
+  if (!decoded) return newError("Invalid token!", res, 401);
+
+  req.userID = decoded.id;
+
   return resolve();
 }
 
@@ -18,7 +23,7 @@ module.exports = {
   Mutation: {
     updateUser: authUser,
     deleteUser: authUser,
-    addBooks: authUser,
-    removeBooks: authUser
+    addBook: authUser,
+    removeBook: authUser
   }
 };

@@ -1,74 +1,107 @@
 const { Users, Books } = require("../database/models");
+const { newError } = require("../utils/error");
 
-const jwt = require("../configs/jwt");
-const bcrypt = require("../configs/bcrypt");
+const jwt = require("../utils/jwt");
+const bcrypt = require("../utils/bcrypt");
 
 module.exports = {
   query: {
     async users() {
       const users = await Users.find();
+
       return users;
     },
-    async user(_, args, { request }) {
-      const { userID: _id } = request;
+    async user(_, args, { req, res }) {
+      const { userID: _id } = req;
+
       const user = await Users.findOne({ _id });
+
+      if (!user) return newError("User not found", res, 404);
+
       user.books = await Books.find({ _id: user.booksID });
+
       return user;
     }
   },
   mutation: {
-    async register(_, args) {
+    async register(_, args, { res }) {
+      if (await Users.findOne({ username: args.username }))
+        return newError("User already exists", res, 400);
+
       args.password = await bcrypt.hash(args.password);
+
       const user = await Users.create(args);
       if (!user) throw new Error("Error");
+
       return user;
     },
-    async login(_, args) {
+    async login(_, args, { res }) {
       const { username, email, password } = args;
+
       let user = {};
       if (username)
         user = await Users.findOne({ username }).select("+password");
       else user = await Users.findOne({ email }).select("+password");
-      if (!user) throw new Error("User not found");
+
+      if (!user) return newError("User not found", res, 404);
+
       if (!(await bcrypt.compare(password, user.password)))
-        throw new Error("Password error");
+        return newError("Password error", res, 401);
+
       const token = await jwt.sign(user._id);
+
       return token;
     },
-    async updateUser(_, args, { request }) {
-      const { userID: _id } = request;
+    async updateUser(_, args, { req, res }) {
+      const { userID: _id } = req;
+
       const result = await Users.updateOne({ _id }, args);
-      if (!result.n) throw new Error("User not found");
+      if (!result.n) newError("User not found", res, 404);
+
       const user = await Users.findOne({ _id });
+
       return user;
     },
-    async deleteUser(_, args, { request }) {
-      const { userID: _id } = request;
+    async deleteUser(_, args, { req, res }) {
+      const { userID: _id } = req;
+
       const result = await Users.deleteOne({ _id });
-      if (!result.n) throw new Error("User not found");
+      if (!result.n) newError("User not found", res, 404);
+
       return "OK";
     },
-    async addBooks(_, { booksID }, { request }) {
-      const { userID: _id } = request;
+    async addBook(_, { bookID }, { req, res }) {
+      const { userID: _id } = req;
+
       const user = await Users.findOne({ _id });
-      booksID.forEach(value => {
-        if (user.booksID.includes(value)) return;
-        user.booksID.push(value);
-      });
+
+      if (user.booksID.includes(bookID))
+        return newError("Book already added", res, 400);
+
+      if (!(await Books.findOne({ _id: bookID })))
+        return newError("Book not found", res, 404);
+
+      user.booksID.push(bookID);
       user.save();
+
       user.books = await Books.find({ _id: user.booksID });
+
       return user;
     },
-    async removeBooks(_, { booksID }, { request }) {
-      const { userID: _id } = request;
+    async removeBook(_, { bookID }, { req, res }) {
+      const { userID: _id } = req;
+
       const user = await Users.findOne({ _id });
-      booksID.forEach(value => {
-        if (!user.booksID.includes(value)) return;
-        const index = user.booksID.indexOf(value);
-        user.booksID.splice(index, 1);
-      });
+
+      if (!user.booksID.includes(bookID))
+        return newError("Book not found", res, 404);
+
+      const index = user.booksID.indexOf(bookID);
+      user.booksID.splice(index, 1);
       user.save();
+
       user.books = await Books.find({ _id: user.booksID });
+
       return user;
     }
   }

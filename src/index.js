@@ -1,27 +1,40 @@
 require("dotenv").config();
 
-const { GraphQLServer } = require("graphql-yoga");
+const { ApolloServer, makeExecutableSchema } = require("apollo-server");
+const { applyMiddleware } = require("graphql-middleware");
 
-const typeDefs = require("./schemas/graphql");
 const resolvers = require("./resolvers");
+const typeDefs = require("./schemas/graphql");
 const authUser = require("./middlewares/authUser");
+
+const cors = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
+};
+
+const schema = applyMiddleware(
+  makeExecutableSchema({ typeDefs, resolvers }),
+  authUser
+);
+
+const server = new ApolloServer({
+  cors,
+  schema,
+  context: context => context
+});
 
 const opts = {
   endpoint: "/graphql",
   port: process.env.PORT || 5000
 };
 
-const server = new GraphQLServer({
-  typeDefs,
-  resolvers,
-  context: req => ({ ...req }),
-  middlewares: [authUser]
-});
+const runServer = async () => {
+  const infos = await server.listen(opts);
 
-server.start(opts, ({ port, endpoint }) => {
   console.log(`
-    \t\t\tRodando na porta ${port}
-    \tAcesse "http://localhost:${port}" para acessar o playground
-    Acesse "http://localhost:${port}${endpoint}" para fazer requisições HTTP
+    \n\n\t\t🚀 Server ready at "${infos.url}"
+    \tAccess "${infos.url}graphql/" to make requests
   `);
-});
+};
+
+runServer();
